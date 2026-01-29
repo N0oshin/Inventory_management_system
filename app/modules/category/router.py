@@ -6,9 +6,13 @@ from app.core.database import get_db
 from app.modules.category import schemas, services
 
 router = APIRouter(prefix="/categories", tags=["Categories"])
+"""
+The prefix tells FastAPI: "Every route inside this router should automatically start with /categories
+Without a prefix: @router.get("/categories")
+With the prefix:  @router.get("/")
+"""
 
 
-# create endpoint
 @router.post("/", response_model=schemas.CategoryResponse)
 async def create_new_category(
     category_in: schemas.CategoryCreate, db: AsyncSession = Depends(get_db)
@@ -19,3 +23,9 @@ async def create_new_category(
 @router.get("/", response_model=List[schemas.CategoryResponse])
 async def list_categories(db: AsyncSession = Depends(get_db)):
     return await services.get_active_categories(db)
+
+
+"""
+response_model=schemas.CategoryResponse: 
+This is a Pydantic "Filter." Even if your database object has 20 fields, this ensures the user only sees the fields defined in CategoryResponse
+"""

@@ -18,7 +18,6 @@ async def create_category(db: AsyncSession, category_data: CategoryCreate):
         )
 
     # If the name is unique, create the new Category object
-    # We convert the Pydantic schema into a SQLAlchemy Model
     new_category = Category(
         name=category_data.name,
         description=category_data.description,

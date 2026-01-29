@@ -11,12 +11,10 @@ if TYPE_CHECKING:
 class Category(Base):
     __tablename__ = "categories"
 
-    # Category name must be unique
     name: Mapped[str] = mapped_column(
         String(100), unique=True, nullable=False, index=True
     )
 
-    # Optional description
     description: Mapped[str] = mapped_column(Text, nullable=True)
 
     # Requirement: Soft delete field
@@ -30,3 +28,8 @@ class Category(Base):
     products: Mapped[List["Product"]] = relationship(
         "Product", back_populates="category"
     )
+
+    """
+    If Mapped is the "translator" that tells Python what kind of data to expect, 
+    mapped_column is the "Configuration Specialist" that define all the constraints and rules for that data.
+    """
