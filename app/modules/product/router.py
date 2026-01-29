@@ -2,6 +2,7 @@ from fastapi import APIRouter, Depends
 from sqlalchemy.ext.asyncio import AsyncSession
 from typing import List
 from uuid import UUID
+from sqlalchemy.orm import selectinload
 
 from app.core.database import get_db
 from app.modules.product import schemas, services
@@ -23,7 +24,8 @@ async def list_all_products(db: AsyncSession = Depends(get_db)):
     from sqlalchemy.future import select
     from app.modules.product.models import Product
 
-    query = select(Product)
+    # query = select(Product)
+    query = select(Product).options(selectinload(Product.category))
     result = await db.execute(query)
     return result.scalars().all()
 
